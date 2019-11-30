@@ -1,27 +1,41 @@
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class Cars {
-    Car car;
-    public Cars(String model, int year, float motorVolume, int mileage) {
-        this.car = new Car();
-        this.car.model = model;
-        this.car.year = year;
-        this.car.motorVolume = motorVolume;
-        this.car.mileageStart = mileage;
 
-        this.car.money = new ArrayList<Integer>();
-        this.car.liter = new ArrayList<Integer>();
-        this.car.mileage = new ArrayList<Integer>();
+    private Map<String,Car> cars;
+
+    public Cars() {
+        this.cars = new HashMap<String, Car>();
     }
 
-    public void addFuel(int money, int liter, int mileage) {
-        this.car.money.add(money);
-        this.car.liter.add(liter);
-        this.car.mileage.add(mileage);
+    public void addCar(String model, int year, float motorVolume, int mileage, String number ) {
+        if (this.cars.containsKey(number)) {
+            System.out.println("Такая тачка есть уже");
+            return;
+        }
+        Car car = new Car();
+        car.model = model;
+        car.year = year;
+        car.motorVolume = motorVolume;
+        car.mileageStart = mileage;
+
+        car.money = new ArrayList<Integer>();
+        car.liter = new ArrayList<Integer>();
+        car.mileage = new ArrayList<Integer>();
+
+        this.cars.put(number,car);
+
+    }
+
+    public void addFuel(String number,int money, int liter, int mileage) {
+        Car car = this.cars.get(number);
+        car.money.add(money);
+        car.liter.add(liter);
+        car.mileage.add(mileage);
     }
 
     private int sum( ArrayList<Integer> arr) {
@@ -31,17 +45,24 @@ public class Cars {
         return sum;
     }
 
-    public double calcFuelСonsumption() {
-        int mileage = this.car.mileage.get( this.car.mileage.size() - 1 ) - this.car.mileageStart;
-        double fuel = this.sum(this.car.liter);
+    public double calcFuelСonsumption(String number) {
+        Car car = this.cars.get(number);
+        int mileage = car.mileage.get( car.mileage.size() - 1 ) - car.mileageStart;
+        double fuel = this.sum(car.liter);
         return (fuel / mileage) * 100;
     }
 
-    public int sumMoney() {
-        return this.sum(this.car.money);
+    public int sumMoney(Car car) {
+        return this.sum(car.money);
     }
 
-    public Car getCar(){
-        return this.car;
+    public Car getCar(String number){
+        return this.cars.get(number);
     }
+
+    public Set<String> getNumbers() {
+        return this.cars.keySet();
+    }
+
+//    public dumpCarJSON
 }
