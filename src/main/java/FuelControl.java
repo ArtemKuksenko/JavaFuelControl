@@ -1,12 +1,31 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Arrays;
 
+
+@Configuration
+@EnableAutoConfiguration
+@ComponentScan
 public class FuelControl {
     public static void main(String[] args) {
+        ApplicationContext ctx = SpringApplication.run(FuelControl.class, args);
 //        ObjectMapper mapper = new ObjectMapper();
+//        String[] beanNames = ctx.getBeanDefinitionNames();
+//        Arrays.sort(beanNames);
+//        for (String beanName : beanNames) {
+//            System.out.println(beanName);
+//        }
         Cars cars = new Cars();
         cars.addCar("taz",2006,1,110000,"o000oo123");
         cars.addFuel("o000oo123",500,10,110100);
